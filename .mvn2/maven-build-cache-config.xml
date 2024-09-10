@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cache>
+    <configuration>
+        <enabled>false</enabled>
+        <remote enabled="true" id="art_releases">
+            <url>https://artifactorymaster.outbrain.com/artifactory/releases/maven-cache</url>
+        </remote>
+    </configuration>
+    <executionControl>
+        <runAlways>
+            <goalsLists>
+                <goalsList artifactId="maven-install-plugin">
+                    <goals>
+<!--                        Always install artifacts in case they should be used by other projects-->
+                        <goal>install</goal>
+                    </goals>
+                </goalsList>
+                <goalsList artifactId="ci-friendly-flatten-maven-plugin">
+                    <goals>
+                        <goal>flatten</goal>
+                    </goals>
+                </goalsList>
+            </goalsLists>
+        </runAlways>
+        <reconcile>
+            <plugins>
+                <plugin artifactId="maven-surefire-plugin" goal="test">
+                    <reconciles>
+                        <reconcile propertyName="skip" skipValue="true"/>
+                        <reconcile propertyName="skipExec" skipValue="true"/>
+                        <reconcile propertyName="skipTests" skipValue="true"/>
+                        <reconcile propertyName="testFailureIgnore" skipValue="true"/>
+                    </reconciles>
+                </plugin>
+            </plugins>
+        </reconcile>
+    </executionControl>
+</cache>
